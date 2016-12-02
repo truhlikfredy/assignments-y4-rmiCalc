@@ -91,7 +91,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The 'AC' (clear) button was pressed.
    */
   @Override
-  public void clear() throws RemoteException {
+  public synchronized void clear() throws RemoteException {
     displayValue = 0;
     printStack();
   }
@@ -101,7 +101,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * Remove one digit from the display
    */
   @Override
-  public void del() throws RemoteException {
+  public synchronized void del() throws RemoteException {
     displayValue = displayValue / 10;
   }
 
@@ -110,7 +110,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The / button pressed
    */
   @Override
-  public void divide() throws RemoteException {
+  public synchronized void divide() throws RemoteException {
     evaluateStack(Operator.DIVIDE);
   }
 
@@ -119,7 +119,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * Add to the top of the stack, when the Enter button is pressed
    */
   @Override
-  public void enter() throws RemoteException {
+  public synchronized void enter() throws RemoteException {
     rpn.push(displayValue);
     displayValue = 0;
     printStack();
@@ -129,7 +129,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * Equals is not used in RPN calculators
    */
   @Override
-  public void equals() throws RemoteException {
+  public synchronized void equals() throws RemoteException {
     // not used by this implementation of calculator
   }
 
@@ -139,7 +139,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * 
    * @param operator
    */
-  private void evaluateStack(Operator operator) throws RemoteException {
+  private synchronized void evaluateStack(Operator operator) throws RemoteException {
     if (VERBOSE) System.out.println(operator);
 
     // if stack is not big enough do not do anything yet
@@ -184,7 +184,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * should say something like "Written by H. Simpson".
    */
   @Override
-  public String getAuthor() throws RemoteException {
+  public synchronized String getAuthor() throws RemoteException {
     return ("Anton Krug");
   }
 
@@ -193,7 +193,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * Return the value that should currently be displayed on the calculator
    * display.
    */
-  public int getDisplayValue() throws RemoteException {
+  public synchronized int getDisplayValue() throws RemoteException {
     return (displayValue);
   }
 
@@ -201,7 +201,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * Will return string with listed content of the stack
    */
   @Override
-  public String getStackContent() throws RemoteException {
+  public synchronized String getStackContent() throws RemoteException {
     return Messages.getString("STACK_CONTENT") + rpn;
   }
 
@@ -210,7 +210,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * Return the title of this calculation engine.
    */
   @Override
-  public String getTitle() throws RemoteException {
+  public synchronized String getTitle() throws RemoteException {
     return ("RPN RMI Calculator");
   }
 
@@ -220,7 +220,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * is, so it should say something like "Version 1.1".
    */
   @Override
-  public String getVersion() throws RemoteException {
+  public synchronized String getVersion() throws RemoteException {
     return ("RPN v1.3");
   }
 
@@ -229,7 +229,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The 'minus' button was pressed.
    */
   @Override
-  public void minus() throws RemoteException {
+  public synchronized void minus() throws RemoteException {
     evaluateStack(Operator.MINUS);
   }
 
@@ -238,7 +238,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The 'Modulo' button was pressed.
    */
   @Override
-  public void modulo() throws RemoteException {
+  public synchronized void modulo() throws RemoteException {
     evaluateStack(Operator.MODULO);
   }
 
@@ -247,7 +247,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The * button pressed
    */
   @Override
-  public void multiply() throws RemoteException {
+  public synchronized void multiply() throws RemoteException {
     evaluateStack(Operator.MULTIPLY);
   }
 
@@ -256,7 +256,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * A number button was pressed. Do whatever you have to do to handle it. The
    * number value of the button is given as a parameter.
    */
-  public void numberPressed(int number) throws RemoteException {
+  public synchronized void numberPressed(int number) throws RemoteException {
     displayValue = displayValue * 10 + number;
   }
 
@@ -265,7 +265,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The 'On' button was pressed.
    */
   @Override
-  public void offOn() throws RemoteException {
+  public synchronized void offOn() throws RemoteException {
     displayValue = 0;
     rpn = new Stack<>();
     printStack();
@@ -276,7 +276,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The 'plus' button was pressed.
    */
   @Override
-  public void plus() throws RemoteException {
+  public synchronized void plus() throws RemoteException {
     evaluateStack(Operator.PLUS);
   }
 
@@ -285,7 +285,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * The 'Pop' button was pressed.
    */
   @Override
-  public void pop() throws RemoteException {
+  public synchronized void pop() throws RemoteException {
     if (rpn.size() > 0) {
       displayValue = rpn.pop();
     }
@@ -298,7 +298,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
    * 
    * @throws RemoteException
    */
-  private void printStack() throws RemoteException {
+  private synchronized void printStack() throws RemoteException {
     if (VERBOSE) {
       System.out.println(getStackContent());
     }

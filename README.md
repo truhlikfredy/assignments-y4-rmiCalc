@@ -10,7 +10,7 @@ Features
 
 * RPN, reverse polish notation postfix type calculator (first you need to populate stack and then apply the operator on it)
 * All buttons on the calculator are RMI methods (not just add/subtract, but all numbers as well). Completely all processing is done on server.
-* Shared state of the calculator with all clients
+* Shared syncrhonized state of the calculator with all clients
 * Add, Divide, Multiply, Modulus, Pop stack, Add to stack, On, AC, Del.
 * Proper use of Java8. **lambda expressions** and **method referencing**, to attach GUI elements to runnables which will use the RMI methods and do Exception handling as well in a single line.
 ```java
