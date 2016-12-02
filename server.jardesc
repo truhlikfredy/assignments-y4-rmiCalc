@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="ds-ca3/CalculatorRpnRmiServer.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/ds-ca3/server.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=ds-ca3/src&lt;antonkrug.eu{CalculatorRpnRmiServer.java[CalculatorRpnRmiServer" manifestLocation="/ds-ca3/server" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="false" exportJavaFiles="false" exportOutputFolder="true">
+        <file path="/ds-ca3/.classpath"/>
+        <file path="/ds-ca3/run.bat"/>
+        <file path="/ds-ca3/run.sh"/>
+        <folder path="/ds-ca3/images"/>
+        <file path="/ds-ca3/.gitignore"/>
+        <file path="/ds-ca3/server"/>
+        <file path="/ds-ca3/.project"/>
+        <file path="/ds-ca3/README.md"/>
+        <javaElement handleIdentifier="=ds-ca3/src"/>
+        <javaElement handleIdentifier="=ds-ca3/resources"/>
+    </selectedElements>
+</jardesc>

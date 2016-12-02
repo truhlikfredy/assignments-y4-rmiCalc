@@ -45,11 +45,15 @@ public class CaclculatorClient extends JFrame implements ActionListener {
       System.out.println(Messages.getString("RMI_URI") + uri);
       System.out.println(Messages.getString("EXCEPTION") + e.getMessage());
       e.printStackTrace();
+      System.exit(1);
     }
-    
   }
   
   
+  /**
+   * Prepare the UI elements for display and attach runnables to buttons
+   * @throws Exception
+   */
   public CaclculatorClient() throws Exception {   
     actions = new HashMap<>();    
     
@@ -66,8 +70,8 @@ public class CaclculatorClient extends JFrame implements ActionListener {
 
     buttonPanel = new JPanel(new GridLayout(5, 4));
            
-    //do the exception catching and handling inside the lambda expressions and throw up on upper level to cascade the error up
-      
+    //do the exception catching and handling inside the lambda expressions and throw up on upper 
+    //level to cascade the error up. create buttons starting from top left 
     for (Integer i=7; i<10; i++) addButton(i.toString(), null);
     addButton("ON",   ()->{try { calc.offOn();     } catch (RemoteException e) {throw new UncheckedIOException(e);}});
       
@@ -124,6 +128,7 @@ public class CaclculatorClient extends JFrame implements ActionListener {
     buttonPanel.add(button);
   }
   
+  
   /**
   * An action has been performed. Find out what it was and handle it.
   */
@@ -148,6 +153,7 @@ public class CaclculatorClient extends JFrame implements ActionListener {
     redisplay();
   }
   
+  
   /**
    * Update the interface display to show the current value of the calculator.
    */
@@ -160,5 +166,6 @@ public class CaclculatorClient extends JFrame implements ActionListener {
       System.exit(1);
     }
   }  
+  
   
 }
