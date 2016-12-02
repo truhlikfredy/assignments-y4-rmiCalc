@@ -33,7 +33,8 @@ Features
       }
     }
     redisplay();  //update display with new content
-  }```
+  }
+  ```
 
 * Separation of concerns, configuration is removed from code and kept in separate **config.properties** file.
 
