@@ -9,13 +9,16 @@ Features
 --------
 
 * RPN, reverse polish notation postfix type calculator (first you need to populate stack and then apply the operator on it)
-* All buttons on the calculator are RMI methods (not just add/subtract, but all numbers as well)
+* All buttons on the calculator are RMI methods (not just add/subtract, but all numbers as well). Completely all processing is done on server.
 * Shared state of the calculator with all clients
 * Add, Divide, Multiply, Modulus, Pop stack, Add to stack, On, AC, Del.
 * Proper use of Java8. **lambda expressions** and **method referencing**, to attach GUI elements to runnables which will use the RMI methods and do Exception handling as well in a single line.
-    `addButton("ENTER", ()->{try { calc.enter();    } catch (RemoteException e) {throw new UncheckedIOException(e);}});`
+```java
+	addButton("ENTER", ()->{try { calc.enter();    } catch (RemoteException e) {throw new UncheckedIOException(e);}});
+```
 	Thanks to Java8 you can do more with less code, makes GUI event handling very simplistic:
-	```@Override
+```java
+@Override
   public void actionPerformed(ActionEvent event) {
     String action = event.getActionCommand();
     try {
@@ -34,7 +37,7 @@ Features
     }
     redisplay();  //update display with new content
   }
-  ```
+```
 
 * Separation of concerns, configuration is removed from code and kept in separate **config.properties** file.
 
