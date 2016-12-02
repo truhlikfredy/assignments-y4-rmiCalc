@@ -136,8 +136,10 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
 				break;
 
 			case DIVIDE:
-				int numerator = rpn.pop();
-				rpn.push(rpn.pop() / numerator);
+			  if (rpn.peek()>0) {
+			    int numerator = rpn.pop();
+			    rpn.push(rpn.pop() / numerator);
+			  }
 				break;
 
 			case MODULO:

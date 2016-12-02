@@ -89,7 +89,8 @@ public class CaclculatorClient extends JFrame implements ActionListener {
     
     contentPane.add(buttonPanel, BorderLayout.CENTER);
 
-    status = new JLabel(calc.getAuthor()+" "+calc.getVersion());
+    status = new JLabel();
+    
     contentPane.add(status, BorderLayout.SOUTH);
     
     framePane.setLayout(new BorderLayout(8, 8));
@@ -153,6 +154,7 @@ public class CaclculatorClient extends JFrame implements ActionListener {
   private void redisplay() {
     try {
       display.setText(new Integer(calc.getDisplayValue()).toString());
+      status.setText(calc.getStackContent());
     } catch (RemoteException e) {
       e.printStackTrace();
       System.exit(1);
