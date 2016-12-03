@@ -1,9 +1,16 @@
-RMI calculator - CA 3
+Reverse polish notation calculator using remote method invocation- CA 3
 ========================
  by Anton Krug 20062210
 
 
 ![screenshot](https://raw.githubusercontent.com/truhlikfredy/assignments-y4-rmiCalc/master/images/shot.jpg?token=ABC5ibMQvOPnGcloC4eL2gnPqDZVDKhhks5YSou8wA%3D%3D)
+
+Starting
+--------
+
+* Windows - **run.bat** will start server and cliet as well.
+* Linux   - **runServer.sh** for server and then **runClient.sh** for clients. You run server into background and can't find it or it's stuck then **stopServer.sh** should find the server process and kill it for you.
+ 
 
 Features
 --------
@@ -12,32 +19,26 @@ Features
 * All buttons on the calculator are RMI methods (not just add/subtract, but all numbers as well). Completely all processing is done on server.
 * Shared syncrhonized state of the calculator with all clients
 * Add, Divide, Multiply, Modulus, Pop stack, Add to stack, On, AC, Del.
-* Proper use of Java8. **lambda expressions** and **method referencing**, to attach GUI elements to runnables which will use the RMI methods and do Exception handling as well in a single line.
-```java
-	addButton("ENTER", ()->{try { calc.enter();    } catch (RemoteException e) {throw new UncheckedIOException(e);}});
-```
-	Thanks to Java8 you can do more with less code, makes GUI event handling very simplistic:
-```java
-@Override
+* Proper use of Java8. **lambda expressions** and **method referencing**, to attach GUI elements to runnables which will use the RMI methods and do Exception handling as well in a single line. It will handle all problems from null pointers to RemoteException.
+	```java
+addButton("ENTER", ()->{try { calc.enter(); } catch (Exception e) {throw new RuntimeException(e);}});
+	```
+
+	Thanks to Java8 you can do more with less code, makes GUI event handling very simplistic. This will handle **EVERY** single button and **ALL** possible exceptions.
+
+	```java
+  @Override
   public void actionPerformed(ActionEvent event) {
-    String action = event.getActionCommand();
-    try {
-      //if it's number handle it as numberPress
-      int number = Integer.parseInt(action);
-      calc.numberPressed(number);
-     
-    } catch(Exception e) {
-      //if it's not number just run the runnable
-      if (actions.containsKey(action)) {
-        actions.get(action).run();      
-      }
-      else {
-        System.out.println(Messages.getString("UNSUPORTED_BUTTON"));
-      }
+    String actionText = event.getActionCommand();
+    
+    if (!handleNumbers(actionText)) {
+      //if it's not number then it must be the operator, run the runnable associated with it
+      handleOperators(actionText);
     }
-    redisplay();  //update display with new content
+    
+    redisplay(); //update the calculator display
   }
-```
+	```
 
 * Separation of concerns, configuration is removed from code and kept in separate **config.properties** file.
 

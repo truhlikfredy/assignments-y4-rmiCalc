@@ -12,7 +12,6 @@
     </manifest>
     <selectedElements exportClassFiles="false" exportJavaFiles="false" exportOutputFolder="true">
         <folder path="/ds-ca3/images"/>
-        <folder path="/ds-ca3/doc"/>
         <javaElement handleIdentifier="=ds-ca3/src"/>
         <javaElement handleIdentifier="=ds-ca3/resources"/>
     </selectedElements>

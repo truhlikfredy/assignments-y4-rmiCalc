@@ -65,12 +65,21 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
 
       // default security manager will be good enough for simple calculator
       // project running at localhost
+     
 
       System.out.println(Config.getInstance().getString("class")
           + Messages.getString("SERVER_WORKING"));
+      
+      final String uri = 
+          "rmi://" + Config.getInstance().getString("servername") + 
+          ":" + Config.getInstance().getString("port") +
+          "/" + Config.getInstance().getString("class");
+      
+      System.out.println(Messages.getString("CLIENTS_WILL_USE") + uri);
 
     } catch (Exception e) {
-      System.out.println(Messages.getString("SERVER_ERROR") + e.getMessage());
+      System.out.println(Messages.getString("SERVER_ERROR"));
+      System.out.println(e.getMessage());
       e.printStackTrace();
       System.exit(1);
     }
@@ -143,7 +152,10 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
     if (VERBOSE) System.out.println(operator);
 
     // if stack is not big enough do not do anything yet
-    if (rpn.size() < 2) return;
+    if (rpn.size() < 2) {
+      System.out.println(Messages.getString("SERVER_STACK_SMALL"));
+      return;
+    }
 
     switch (operator) {
     case PLUS:
@@ -159,9 +171,12 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
       break;
 
     case DIVIDE:
-      if (rpn.peek() > 0) {
+      if (rpn.peek() != 0) {
         int numerator = rpn.pop();
         rpn.push(rpn.pop() / numerator);
+      }
+      else {
+        System.out.println(Messages.getString("DIVIDE_ZERO"));
       }
       break;
 
@@ -171,7 +186,7 @@ public class CalculatorRpnRmiServer extends UnicastRemoteObject implements Calcu
       break;
 
     default:
-      System.out.println("Unsuported operator sent");
+      System.out.println(Messages.getString("SERVER_WRONG_OP"));
       break;
     }
     displayValue = rpn.peek();

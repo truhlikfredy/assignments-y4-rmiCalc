@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.UncheckedIOException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,11 +42,13 @@ public class CaclculatorClient extends JFrame implements ActionListener {
     }
     catch (Exception e) {
       System.out.println(Messages.getString("RMI_URI") + uri);
-      System.out.println(Messages.getString("EXCEPTION") + e.getMessage());
+      System.out.println(Messages.getString("EXCEPTION_CONNECT"));
+      System.out.println(e.getMessage());
       e.printStackTrace();
       System.exit(1);
     }
   }
+  
   
   
   /**
@@ -70,27 +71,28 @@ public class CaclculatorClient extends JFrame implements ActionListener {
 
     buttonPanel = new JPanel(new GridLayout(5, 4));
            
-    //do the exception catching and handling inside the lambda expressions and throw up on upper 
-    //level to cascade the error up. create buttons starting from top left 
+    //this will handle everything null pointer, RemoteException etc...
+    //do the exception catching and handling inside the lambda expressions and throw up on upper
+    //level to cascade the error up. create buttons starting from top left
     for (Integer i=7; i<10; i++) addButton(i.toString(), null);
-    addButton("ON",   ()->{try { calc.offOn();     } catch (RemoteException e) {throw new UncheckedIOException(e);}});
+    addButton("ON",   ()->{try { calc.offOn();     } catch (Exception e) {throw new RuntimeException(e);}});
       
     for (Integer i=4; i<7;  i++) addButton(i.toString(), null);          
-    addButton("AC",   ()->{try { calc.clear();     } catch (RemoteException e) {throw new UncheckedIOException(e);}});
+    addButton("AC",   ()->{try { calc.clear();     } catch (Exception e) {throw new RuntimeException(e);}});
       
     for (Integer i=1; i<4;  i++) addButton(i.toString(), null);          
-    addButton("DEL",   ()->{try { calc.del();      } catch (RemoteException e) {throw new UncheckedIOException(e);}});
+    addButton("DEL",   ()->{try { calc.del();      } catch (Exception e) {throw new RuntimeException(e);}});
       
     addButton("0", null);
-    addButton("+",     ()->{try { calc.plus();     } catch (RemoteException e) {throw new UncheckedIOException(e);}});
-    addButton("-",     ()->{try { calc.minus();    } catch (RemoteException e) {throw new UncheckedIOException(e);}});
-    addButton("*",     ()->{try { calc.multiply(); } catch (RemoteException e) {throw new UncheckedIOException(e);}});
+    addButton("+",     ()->{try { calc.plus();     } catch (Exception e) {throw new RuntimeException(e);}});
+    addButton("-",     ()->{try { calc.minus();    } catch (Exception e) {throw new RuntimeException(e);}});
+    addButton("*",     ()->{try { calc.multiply(); } catch (Exception e) {throw new RuntimeException(e);}});
       
-    addButton("/",     ()->{try { calc.divide();   } catch (RemoteException e) {throw new UncheckedIOException(e);}});
-    addButton("MOD",   ()->{try { calc.modulo();   } catch (RemoteException e) {throw new UncheckedIOException(e);}});
-    addButton("POP",   ()->{try { calc.pop();      } catch (RemoteException e) {throw new UncheckedIOException(e);}});
-    addButton("ENTER", ()->{try { calc.enter();    } catch (RemoteException e) {throw new UncheckedIOException(e);}});
-    
+    addButton("/",     ()->{try { calc.divide();   } catch (Exception e) {throw new RuntimeException(e);}});
+    addButton("MOD",   ()->{try { calc.modulo();   } catch (Exception e) {throw new RuntimeException(e);}});
+    addButton("POP",   ()->{try { calc.pop();      } catch (Exception e) {throw new RuntimeException(e);}});
+    addButton("ENTER", ()->{try { calc.enter();    } catch (Exception e) {throw new RuntimeException(e);}});
+
     contentPane.add(buttonPanel, BorderLayout.CENTER);
 
     status = new JLabel();
@@ -130,27 +132,68 @@ public class CaclculatorClient extends JFrame implements ActionListener {
   
   
   /**
+   * If the button is number convert it into a number and handle it as number press
+   * @return
+   */
+  private boolean handleNumbers(String actionText) {
+    int number = -1;
+    
+    try {
+      number = Integer.parseInt(actionText);     
+    } catch(Exception e) {
+      //any problem with parsing number means, not a good number
+      return false;
+    }
+    
+    try {
+      calc.numberPressed(number);      
+    } catch (Exception e) {
+      System.out.println(Messages.getString("CLIENT_RMI_ERROR"));
+      System.out.println(e.getMessage());
+      System.exit(1);
+    }
+   
+    //it was a number and was handled as such
+    return true;
+  }
+  
+  
+  /**
+   * Just run runnable for all the non-number events
+   */
+  private void handleOperators(String actionText) {
+    
+    //check if we have runnable for given key
+    if (actions.containsKey(actionText)) {
+      try {
+        actions.get(actionText).run();
+      }
+      catch(Exception rmiE) {
+        System.out.println(Messages.getString("CLIENT_RMI_ERROR"));
+        System.out.println(rmiE.getMessage());
+        System.exit(1);
+      }
+    }
+    else {
+      System.out.println(Messages.getString("UNSUPORTED_BUTTON"));
+    }
+    
+  }
+  
+  
+  /**
   * An action has been performed. Find out what it was and handle it.
   */
   @Override
   public void actionPerformed(ActionEvent event) {
-    String action = event.getActionCommand();
-    try {
-      //if it's number handle it as numberPress
-      int number = Integer.parseInt(action);
-      calc.numberPressed(number);
-     
-    } catch(Exception e) {
-      //if it's not number just run the runnable
-      if (actions.containsKey(action)) {
-        actions.get(action).run();      
-      }
-      else {
-        
-        System.out.println(Messages.getString("UNSUPORTED_BUTTON"));
-      }
+    String actionText = event.getActionCommand();
+    
+    if (!handleNumbers(actionText)) {
+      //if it's not number then it must be the operator, run the runnable associated with it
+      handleOperators(actionText);
     }
-    redisplay();
+    
+    redisplay(); //update the calculator display
   }
   
   
