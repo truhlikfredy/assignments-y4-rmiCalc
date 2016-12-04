@@ -59,7 +59,7 @@ Metric                           | Total  | Mean  | Std. Dev.
 Cyclomatic Complexity            |        |   1.4 |        1.2
 Nested Block Depth               |        |   0.9 |        0.8
 Packages                         |      2 |       |            
-Classes                          |      7 |       |            
+Classes                          |      8 |       |            
 Methods                          |     53 |       |            
 Lines of code (without comments) |    406 |       |   
 

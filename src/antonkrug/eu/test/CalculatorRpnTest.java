@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import antonkrug.eu.CalculatorInterface;
-import antonkrug.eu.CalculatorRpnRmiServer;
+import antonkrug.eu.CalculatorRpn;
 
 /**
  * Will validate all functions of the calculator to make sure it works as it should
@@ -17,7 +17,7 @@ import antonkrug.eu.CalculatorRpnRmiServer;
  * @date 2016/12/01
  * @version 1.1
  */
-public class CalculatorRpnRmiServerTest {
+public class CalculatorRpnTest {
 
   private CalculatorInterface calculator;
 
@@ -25,7 +25,7 @@ public class CalculatorRpnRmiServerTest {
   public void setUp() throws Exception {
     //populate stacks with some values first
     
-    calculator = new CalculatorRpnRmiServer();
+    calculator = new CalculatorRpn();
     calculator.numberPressed(5);
     calculator.enter();
     calculator.numberPressed(6);

@@ -1,5 +1,5 @@
-start java -jar CalculatorRpnRmiServer.jar
+start cmd /k java -jar CalculatorRpnRmiServer.jar
 
 sleep 2
-start java -jar CalculatorClient.jar
+start cmd /k java -jar CalculatorClient.jar
 
