@@ -3,7 +3,7 @@ Reverse polish notation calculator using remote method invocation- CA 3
  by Anton Krug 20062210
 
 
-![screenshot](https://raw.githubusercontent.com/truhlikfredy/assignments-y4-rmiCalc/master/images/shot.jpg?token=ABC5ibMQvOPnGcloC4eL2gnPqDZVDKhhks5YSou8wA%3D%3D)
+![screenshot](/images/shot.jpg)
 
 Starting
 --------
