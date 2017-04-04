@@ -24,7 +24,7 @@ Features
 addButton("ENTER", ()->{try { calc.enter(); } catch (Exception e) {throw new RuntimeException(e);}});
 ```
 
-	Thanks to Java8 you can do more with less code, makes GUI event handling very simplistic. This will handle **EVERY** single button and **ALL** possible exceptions.
+Thanks to Java8 you can do more with less code, makes GUI event handling very simplistic. This will handle **EVERY** single button and **ALL** possible exceptions.
 
 ```java
   @Override
