@@ -20,13 +20,13 @@ Features
 * Shared syncrhonized state of the calculator with all clients
 * Add, Divide, Multiply, Modulus, Pop stack, Add to stack, On, AC, Del.
 * Proper use of Java8. **lambda expressions** and **method referencing**, to attach GUI elements to runnables which will use the RMI methods and do Exception handling as well in a single line. It will handle all problems from null pointers to RemoteException.
-	```java
+```java
 addButton("ENTER", ()->{try { calc.enter(); } catch (Exception e) {throw new RuntimeException(e);}});
-	```
+```
 
 	Thanks to Java8 you can do more with less code, makes GUI event handling very simplistic. This will handle **EVERY** single button and **ALL** possible exceptions.
 
-	```java
+```java
   @Override
   public void actionPerformed(ActionEvent event) {
     String actionText = event.getActionCommand();
@@ -38,7 +38,7 @@ addButton("ENTER", ()->{try { calc.enter(); } catch (Exception e) {throw new Run
     
     redisplay(); //update the calculator display
   }
-	```
+```
 
 * Separation of concerns, configuration is removed from code and kept in separate **config.properties** file.
 
